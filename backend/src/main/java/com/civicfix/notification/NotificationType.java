@@ -1,0 +1,14 @@
+package com.civicfix.notification;
+
+public enum NotificationType {
+    STATUS_CHANGE,
+    TASK_ASSIGNED,
+    ASSIGNMENT_ACCEPTED,
+    ASSIGNMENT_DECLINED,
+    TASK_IN_PROGRESS,
+    TASK_RESOLVED,
+    CITIZEN_VERIFIED,
+    ISSUE_REOPENED,
+    ISSUE_CLOSED,
+    COMMUNITY_CONFIRMATION
+}

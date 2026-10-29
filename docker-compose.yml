@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: civicfix-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME:-civicfix_db}
+      POSTGRES_USER: ${DB_USER:-civicfix_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-civicfix_secure_password_change_in_prod}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-civicfix_user} -d ${DB_NAME:-civicfix_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: civicfix-backend
+    restart: on-failure
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-civicfix_db}
+      DB_USER: ${DB_USER:-civicfix_user}
+      DB_PASSWORD: ${DB_PASSWORD:-civicfix_secure_password_change_in_prod}
+      JWT_SECRET: ${JWT_SECRET:-404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-86400000}
+      CORS_ALLOWED_ORIGIN: ${CORS_ALLOWED_ORIGIN:-http://localhost:5173}
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+    volumes:
+      - backend-uploads:/app/uploads
+
+volumes:
+  pgdata:
+  backend-uploads:
