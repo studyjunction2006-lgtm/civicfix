@@ -92,31 +92,41 @@ CivicFix features a **Quick Demo Switcher bar** at the top of the interface, all
 
 ## 💻 Running the Monorepo Locally
 
-### 1. Prerequisites
-- **Java 21** or **17**
-- **Node.js 18+** & npm
-- **Docker & Docker Compose** (for PostgreSQL)
-
-### 2. Start PostgreSQL
-```bash
-docker compose up -d postgres
+### Quick 1-Click Launch (Windows)
+Double-click `run-civicfix.bat` or run:
+```powershell
+.\run-civicfix.ps1
 ```
-*Creates `civicfix_db` on port `5432` with username `civicfix_user` and password `civicfix_secure_password_change_in_prod`.*
+*Automatically boots the Spring Boot backend, starts the Vite frontend dev server, and opens your browser to `http://localhost:5173`.*
 
-### 3. Start Spring Boot Backend
+---
+
+### Manual Step-by-Step
+
+#### 1. Prerequisites
+- **Java 25** (LTS)
+- **Node.js 18+** & npm
+- *(Optional)* **Docker & Docker Compose** (for PostgreSQL)
+
+#### 2. Start Backend (Zero Setup — Local H2 or PostgreSQL)
+By default, the backend runs in `local` profile with embedded persistent storage (no Docker required). All demo users, categories, departments, and sample issues are seeded automatically:
 ```bash
 cd backend
 mvn spring-boot:run
 ```
-*Backend runs on `http://localhost:8080` and Swagger UI is accessible at `http://localhost:8080/swagger-ui.html`.*
+*(To use PostgreSQL instead, start PostgreSQL with `docker compose up -d postgres` and run `mvn spring-boot:run -Dspring-boot.run.profiles=dev`)*
 
-### 4. Start React Frontend
+- Backend API: `http://localhost:8080`
+- Swagger UI / OpenAPI: `http://localhost:8080/swagger-ui.html`
+- Embedded Database Console: `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:file:./data/civicfix_local`, User: `sa`, Password: *blank*)
+
+#### 3. Start React Frontend
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-*Frontend runs on `http://localhost:5173`.*
+- Frontend Single-Page App: `http://localhost:5173`
 
 ---
 

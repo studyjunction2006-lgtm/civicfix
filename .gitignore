@@ -12,6 +12,7 @@ frontend/yarn-error.log*
 
 # Java / Maven / Backend
 backend/target/
+backend/data/
 backend/.mvn/wrapper/
 backend/*.iml
 backend/.idea/
@@ -33,6 +34,7 @@ backend/*.log
 .DS_Store
 Thumbs.db
 desktop.ini
+.vscode/
 
 # Logs & temp
 logs/

@@ -44,6 +44,18 @@ services:
     volumes:
       - backend-uploads:/app/uploads
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: civicfix-frontend
+    restart: on-failure
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+      - "3000:80"
+
 volumes:
   pgdata:
   backend-uploads:
